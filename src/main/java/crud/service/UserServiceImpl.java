@@ -11,8 +11,7 @@ import java.util.List;
 @Service
 public class UserServiceImpl implements UserService {
 
-
-    private UserDao userDao;
+    private final UserDao userDao;
 
     @Autowired
     public UserServiceImpl(UserDao userDao) {
@@ -31,7 +30,7 @@ public class UserServiceImpl implements UserService {
         return userDao.getById(id);
     }
 
-    //@Transactional
+    @Transactional
     @Override
     public List<User> getAllUsers() {
         return userDao.getAllUsers();
