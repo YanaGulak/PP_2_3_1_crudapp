@@ -2,7 +2,12 @@ package crud.model;
 
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
 import java.util.Objects;
+
 
 @Entity
 @Table(name = "users")
@@ -13,15 +18,20 @@ public class User {
     private Long id;
 
     @Column(name = "name")
+    @NotEmpty(message = "Имя пользователя не должно быть пустым")
     private String name;
 
     @Column(name = "last_name")
+    @NotEmpty(message = "Фамилия пользователя не должна быть пустой")
     private String lastName;
 
     @Column(name = "age")
+    @Min(value=0)
+    @Max(value=100)
     private Integer age;
 
     @Column(name = "email")
+    @Email(message = "Введите корректный email")
     private String email;
 
     public User() {
@@ -88,8 +98,7 @@ public class User {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof User)) return false;
-        User user = (User) o;
+        if (!(o instanceof User user)) return false;
         return Objects.equals(getId(), user.getId());
     }
 

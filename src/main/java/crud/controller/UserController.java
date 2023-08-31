@@ -5,55 +5,76 @@ import crud.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-@Controller
-@RequestMapping("/users")
+import javax.validation.Valid;
 
+@Controller
 public class UserController {
 
-    private final UserService userService;
+@Autowired
+    private UserService userService;
 
-    @Autowired
+
     public UserController(UserService userService) {
         this.userService = userService;
     }
 
+    public UserController() {
+    }
+
+
     //выводим всех на view "index"
-    @GetMapping
+    @GetMapping(value = "/")
     public String showUsers(ModelMap model) {
         model.addAttribute("users", userService.getAllUsers());
-        return "users/index";
+        return "index";
     }
 
     //выводим одного на view "user"
     @GetMapping("/{id}")
     public String showOneUser(ModelMap model, @PathVariable("id") Long id) {
         model.addAttribute("user", userService.getById(id));
-        return "users/user";
+        return "user";
     }
 
     //получаем форму для добавления нового пользователя
     @GetMapping("/new")
     public String newUser(@ModelAttribute("user") User user) {
-        return "users/new";
-    }
-//создаем нового
-    @PostMapping
-    public String create(@ModelAttribute("user") User user) {
-        userService.saveUser(user);
-        return "redirect:/users"; //redirect - переход по ссылке на /users
+        return "new";
     }
 
+//создаем нового
+    @PostMapping
+    public String create(@ModelAttribute("user") @Valid User user, BindingResult bindResult) {
+        String result = "redirect:/";
+        if (bindResult.hasErrors()) {
+            result = "new";
+        } else {
+            userService.saveUser(user);//redirect - переход по ссылке на /
+        }
+        return result;
+    }
+
+    //получаем форму на изменения
     @GetMapping("/{id}/edit")
     public String edit(ModelMap model, @PathVariable("id") Long id) {
         model.addAttribute("user", userService.getById(id));
-        return "users/edit";
+        return "edit";
     }
 
+    //меняем данные пользователя
     @PatchMapping("/{id}")
     public String update(@ModelAttribute("user") User user, @PathVariable("id") Long id) {
         userService.update(id, user);
-        return "redirect:/users"; //redirect - переход по ссылке на /users
+        return "redirect:/"; //redirect - переход по ссылке на /
+    }
+
+    //удаляем пользователя
+    @DeleteMapping("/{id}")
+    public String delete(@PathVariable("id") Long id) {
+        userService.removeUserById(id);
+        return "redirect:/"; //redirect - переход по ссылке на /
     }
 }
