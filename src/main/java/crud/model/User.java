@@ -26,8 +26,8 @@ public class User {
     private String lastName;
 
     @Column(name = "age")
-    @Min(value=0)
-    @Max(value=100)
+    @Min(value = 0)
+    @Max(value = 100)
     private Integer age;
 
     @Column(name = "email")
@@ -37,11 +37,15 @@ public class User {
     public User() {
     }
 
-    public User(String name, String lastName, Integer age, String email) {
-        this.name = name;
-        this.lastName = lastName;
-        this.age = age;
-        this.email = email;
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", firstName='" + name + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", age=" + age +
+                ", email='" + email + '\'' +
+                '}';
     }
 
     public Long getId() {
@@ -82,17 +86,6 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", firstName='" + name + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", age=" + age +
-                ", email='" + email + '\'' +
-                '}';
     }
 
     @Override

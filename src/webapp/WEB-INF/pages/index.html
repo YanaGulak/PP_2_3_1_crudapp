@@ -23,7 +23,7 @@
         <td th:utext="${user.getEmail()}">Email</td>
 
         <td>
-            <form th:method="GET" th:action="@{/user/{id}(id=${user.getId()})}" th:object="${user}">
+            <form th:method="GET" th:action="@{/edit/{id}(id=${user.getId()})}" th:object="${user}">
                 <input  type="submit" value="Изменить">
             </form>
         </td>

@@ -7,7 +7,6 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -20,14 +19,13 @@ import java.util.Properties;
 
 @Configuration
 @PropertySource(value={"classpath:db.properties"})
-@EnableJpaRepositories
 @EnableTransactionManagement
 @ComponentScan("crud")
 public class DatabaseConfig {
 
 
     private final Environment env;
-    @Autowired
+
     public DatabaseConfig(Environment env) {
         this.env = env;
     }
@@ -68,8 +66,7 @@ public class DatabaseConfig {
     @Bean (name = "transactionManager")
     public JpaTransactionManager transactionManager(EntityManagerFactory entityManagerFactory) {
         JpaTransactionManager transactionManager = new JpaTransactionManager();
-       // transactionManager.setEntityManagerFactory(entityManagerFactory);
-        transactionManager.getEntityManagerFactory().getProperties();
+       transactionManager.setEntityManagerFactory(entityManagerFactory);
         return transactionManager;
     }
 

@@ -2,7 +2,6 @@ package crud.controller;
 
 import crud.model.User;
 import crud.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -13,16 +12,14 @@ import javax.validation.Valid;
 @Controller
 public class UserController {
 
-@Autowired
-    private UserService userService;
-
+    private final UserService userService;
+private static final String REDIRECT="redirect:/";
 
     public UserController(UserService userService) {
         this.userService = userService;
     }
 
-    public UserController() {
-    }
+
 
 
     //выводим всех на view "index"
@@ -48,33 +45,36 @@ public class UserController {
 //создаем нового
     @PostMapping
     public String create(@ModelAttribute("user") @Valid User user, BindingResult bindResult) {
-        String result = "redirect:/";
         if (bindResult.hasErrors()) {
-            result = "new";
+            return"new";
         } else {
             userService.saveUser(user);//redirect - переход по ссылке на /
         }
-        return result;
+        return REDIRECT;
     }
 
     //получаем форму на изменения
-    @GetMapping("/{id}/edit")
+    @GetMapping("/edit/{id}")
     public String edit(ModelMap model, @PathVariable("id") Long id) {
         model.addAttribute("user", userService.getById(id));
         return "edit";
     }
 
     //меняем данные пользователя
-    @PatchMapping("/{id}")
-    public String update(@ModelAttribute("user") User user, @PathVariable("id") Long id) {
-        userService.update(id, user);
-        return "redirect:/"; //redirect - переход по ссылке на /
+    @PatchMapping("/edit/{id}")
+    public String update(@ModelAttribute("user") @Valid User user, BindingResult bindResult) {
+        if (bindResult.hasErrors()) {
+            return"edit";
+        } else {
+            userService.update(user);
+        }
+        return REDIRECT;
     }
 
     //удаляем пользователя
     @DeleteMapping("/{id}")
     public String delete(@PathVariable("id") Long id) {
         userService.removeUserById(id);
-        return "redirect:/"; //redirect - переход по ссылке на /
+        return REDIRECT;
     }
 }
