@@ -19,9 +19,6 @@ private static final String REDIRECT="redirect:/";
         this.userService = userService;
     }
 
-
-
-
     //выводим всех на view "index"
     @GetMapping(value = "/")
     public String showUsers(ModelMap model) {

@@ -18,11 +18,11 @@ public class User {
     private Long id;
 
     @Column(name = "name")
-    @NotEmpty(message = "Имя пользователя не должно быть пустым")
+    @NotEmpty
     private String name;
 
     @Column(name = "last_name")
-    @NotEmpty(message = "Фамилия пользователя не должна быть пустой")
+    @NotEmpty
     private String lastName;
 
     @Column(name = "age")

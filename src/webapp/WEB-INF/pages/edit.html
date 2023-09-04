@@ -5,6 +5,8 @@
     <title>Изменить пользователя</title>
 </head>
 <body>
+<h1>Введите данные для редактирования</h1>
+<br>
 <form th:method="PATCH" th:action="@{/edit/{id}(id=${user.getId()})}" th:object="${user}">
 
     <label for="name">Имя</label>
